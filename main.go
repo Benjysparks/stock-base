@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"fmt"
-	"os"
 	"bufio"
+	"os"
 	"log"
 	_ "github.com/lib/pq"
 	"database/sql"
@@ -57,6 +57,11 @@ func main() {
 
 	commands = map[string]cliCommand{
 		"1": {
+			name:        "Create Stock",
+			description: "Add new stock item",
+			callback:    apiCfg.commandCreateNewStockItem,
+		},
+		"2": {
 			name:        "Create Stock",
 			description: "Add new stock item",
 			callback:    apiCfg.CommandAddStock,

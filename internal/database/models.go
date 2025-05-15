@@ -13,5 +13,5 @@ type Stock struct {
 	Stockname string
 	Amount    int32
 	QtyType   string
-	PricePer  float64
+	PricePer  int32
 }

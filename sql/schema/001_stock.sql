@@ -1,10 +1,10 @@
 -- +goose Up
 CREATE TABLE stock (
     id  UUID PRIMARY KEY,
-    stockname    TEXT NOT NULL,
-    amount      INT  NOT NULL,
+    stockname    TEXT UNIQUE NOT NULL,
+    amount      INTEGER  NOT NULL,
     qty_type    TEXT NOT NULL,
-    price_per   FLOAT NOT NULL
+    price_per   INTEGER NOT NULL
 );
 
 -- +goose Down
