@@ -13,9 +13,11 @@ import (
 )
 
 var commands map[string]cliCommand
+var usercommands map[string]usercliCommand
 
 type apiConfig struct {
 	db			   *database.Queries
+	user			string
 }
 
 
@@ -23,6 +25,12 @@ type cliCommand struct {
     name        string
     description string
     callback    func(args string) error
+}
+
+type usercliCommand struct {
+    name        string
+    description string
+    callback    func(args string, loggedin bool) (bool, error)
 }
 
 type StockItem struct {
@@ -50,10 +58,62 @@ func main() {
 
 	apiCfg := apiConfig{
 		db:				dbQueries,
+		user:			" ",
 	}
 
+	usercommands = map[string]usercliCommand{
+	"1": {
+		name:        "Create User",
+		description: "Creates New User",
+		callback:    apiCfg.commandCreateUser,
+	},
+	"2": {
+		name:        "Log in",
+		description: "Log in",
+		callback:    apiCfg.commandLogIn,
+	},
+}
 
 	scanner := bufio.NewScanner(os.Stdin)
+	loggedin := false
+	for loggedin == false {
+		fmt.Println(" ")
+		fmt.Println("1. Add User")
+		fmt.Println("2. Log In")
+		fmt.Print("\ncommand > ")
+		scanner.Scan()
+		cleanedInput := CleanInput(scanner.Text())
+
+		if len(cleanedInput) == 0 {
+			continue
+		}
+
+		commandName := cleanedInput[0]
+		loggedBool := false
+
+		command, exists := usercommands[commandName]
+		if exists {
+			
+			if len(cleanedInput) == 1 {
+
+				args := ""
+				loggedBool, err = command.callback(args, loggedin)
+				if err != nil {
+					fmt.Println(err)
+			}
+			} else {
+			args := cleanedInput[1]
+			loggedBool, err = command.callback(args, loggedin)
+			if err != nil {
+				fmt.Println(err)
+			}
+			}
+		} else {
+			fmt.Println("Unknown command")
+		}
+		loggedin = loggedBool
+	}
+
 
 	commands = map[string]cliCommand{
 		"1": {
@@ -64,7 +124,7 @@ func main() {
 		"2": {
 			name:        "Check Stock Levels",
 			description: "Shows all stock in database",
-			callback:    apiCfg.CommandAddStock,
+			callback:    apiCfg.CommandShowAllStock,
 		},
 	}
 

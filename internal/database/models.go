@@ -15,3 +15,9 @@ type Stock struct {
 	QtyType   string
 	PricePer  int32
 }
+
+type User struct {
+	ID       uuid.UUID
+	UserName string
+	PassWord string
+}

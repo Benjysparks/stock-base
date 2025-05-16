@@ -67,7 +67,7 @@ func addSpaces (args ...string) string {
 	return wordLine
 }
 
-func (cfg *apiConfig) CommandAddStock(args string) error {
+func (cfg *apiConfig) CommandShowAllStock(args string) error {
 	stock, err := cfg.db.ShowAllStock(context.Background())
 	if err != nil {
 		fmt.Sprintf("")
@@ -79,4 +79,69 @@ func (cfg *apiConfig) CommandAddStock(args string) error {
 	}
 	fmt.Println(" ")
 	return nil
+}
+
+func (cfg *apiConfig) commandCreateUser(args string, loggedin bool) (bool, error) {
+	
+	scanner := bufio.NewScanner(os.Stdin)
+	userName := ""
+	passWord := ""
+
+		for ;; {
+		fmt.Print("New User Name > ")
+		scanner.Scan()
+		userName = scanner.Text()
+		break
+		}
+		for ;; {
+		fmt.Print("New Password > ")
+		scanner.Scan()
+		passWord = scanner.Text()
+		break
+		}
+		cfg.db.CreateNewUser(context.Background(), database.CreateNewUserParams{
+			UserName:		userName,
+			PassWord:		passWord,
+		})
+		return false, nil
+}
+
+func (cfg *apiConfig) commandLogIn(args string, loggedin bool) (bool, error) {
+		scanner := bufio.NewScanner(os.Stdin)
+	userName := ""
+	passWord := ""
+	storedPass := ""
+	var err error
+
+		for ;; {
+		fmt.Print("Enter User Name > ")
+		scanner.Scan()
+		userName = scanner.Text()
+		storedPass, err = cfg.db.GetPassword(context.Background(), userName)
+		if err != nil {
+			fmt.Println(" ")
+			fmt.Println("Invalid Username")
+			fmt.Println(" ")
+		} else{
+			break
+		}
+		}
+
+
+
+		for ;; {
+		fmt.Print("New Password > ")
+		scanner.Scan()
+		passWord = scanner.Text()
+		if passWord == storedPass{
+			cfg.user = userName
+			return true, nil
+		} else {
+			fmt.Println(" ")
+			fmt.Println("Invalid Username")
+			fmt.Println(" ")
+		}
+		break
+		}
+		return false, nil
 }
