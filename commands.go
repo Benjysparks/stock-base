@@ -97,6 +97,7 @@ func (cfg *apiConfig) commandCreateUser(args string, loggedin bool) (bool, error
 		fmt.Print("New Password > ")
 		scanner.Scan()
 		passWord = scanner.Text()
+		fmt.Println(" ")
 		break
 		}
 		cfg.db.CreateNewUser(context.Background(), database.CreateNewUserParams{
@@ -134,7 +135,7 @@ func (cfg *apiConfig) commandLogIn(args string, loggedin bool) (bool, error) {
 		scanner.Scan()
 		passWord = scanner.Text()
 		if passWord == storedPass{
-			cfg.user = userName
+			cfg.User = userName
 			return true, nil
 		} else {
 			fmt.Println(" ")
