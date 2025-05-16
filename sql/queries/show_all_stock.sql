@@ -1,3 +1,3 @@
 -- name: ShowAllStock :many
 
-SELECT  * FROM stock;
+SELECT  stockname, amount, qty_type, price_per FROM stock;

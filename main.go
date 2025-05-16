@@ -62,15 +62,16 @@ func main() {
 			callback:    apiCfg.commandCreateNewStockItem,
 		},
 		"2": {
-			name:        "Create Stock",
-			description: "Add new stock item",
+			name:        "Check Stock Levels",
+			description: "Shows all stock in database",
 			callback:    apiCfg.CommandAddStock,
 		},
 	}
 
 	for ;; {
 		fmt.Println("1. Create New Stock")
-		fmt.Print("command > ")
+		fmt.Println("2. Show All Stock Levels")
+		fmt.Print("\ncommand > ")
 		scanner.Scan()
 		cleanedInput := CleanInput(scanner.Text())
 

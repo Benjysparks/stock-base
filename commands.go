@@ -54,12 +54,29 @@ func (cfg *apiConfig) commandCreateNewStockItem(args string) error {
 }
 
 
+func addSpaces (args ...string) string {
+		wordLine := ""
+		for _, word := range args {
+		spacesNeeded := 20 - len(word)
+		spaces := ""
+		for i := 0; i < spacesNeeded; i++ {
+			spaces = spaces + " "
+		}
+		wordLine = wordLine + (word + spaces)
+	}
+	return wordLine
+}
+
 func (cfg *apiConfig) CommandAddStock(args string) error {
-	fmt.Println("Command issued")
 	stock, err := cfg.db.ShowAllStock(context.Background())
 	if err != nil {
-		fmt.Println("error")
+		fmt.Sprintf("")
 	}
-	fmt.Println(stock)
+	fmt.Println(addSpaces("Stockname", "Amount", "Quantity Type", "Price Per Unit"))
+	fmt.Println(" ")
+	for _, item := range stock {
+		fmt.Println(addSpaces(item.Stockname, fmt.Sprint(item.Amount), item.QtyType, fmt.Sprint(item.PricePer)))
+	}
+	fmt.Println(" ")
 	return nil
 }

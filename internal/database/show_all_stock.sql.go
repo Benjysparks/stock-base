@@ -11,20 +11,26 @@ import (
 
 const showAllStock = `-- name: ShowAllStock :many
 
-SELECT  id, stockname, amount, qty_type, price_per FROM stock
+SELECT  stockname, amount, qty_type, price_per FROM stock
 `
 
-func (q *Queries) ShowAllStock(ctx context.Context) ([]Stock, error) {
+type ShowAllStockRow struct {
+	Stockname string
+	Amount    int32
+	QtyType   string
+	PricePer  int32
+}
+
+func (q *Queries) ShowAllStock(ctx context.Context) ([]ShowAllStockRow, error) {
 	rows, err := q.db.QueryContext(ctx, showAllStock)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Stock
+	var items []ShowAllStockRow
 	for rows.Next() {
-		var i Stock
+		var i ShowAllStockRow
 		if err := rows.Scan(
-			&i.ID,
 			&i.Stockname,
 			&i.Amount,
 			&i.QtyType,
