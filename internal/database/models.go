@@ -5,8 +5,18 @@
 package database
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
+
+type History struct {
+	ID         uuid.UUID
+	UserName   string
+	Stockname  string
+	EditTime   time.Time
+	Adjustment string
+}
 
 type Stock struct {
 	ID        uuid.UUID

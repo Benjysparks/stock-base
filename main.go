@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"fmt"
-	"bufio"
 	"os"
 	"log"
 	_ "github.com/lib/pq"
@@ -14,10 +12,12 @@ import (
 
 var commands map[string]cliCommand
 var usercommands map[string]usercliCommand
+var stockcommands map[string]stockcliCommand
 
 type apiConfig struct {
 	db			   *database.Queries
 	User			string
+	CurrentStock	string
 }
 
 
@@ -32,6 +32,13 @@ type usercliCommand struct {
     description string
     callback    func(args string, loggedin bool) (bool, error)
 }
+
+type stockcliCommand struct {
+    name        string
+    description string
+    callback    func(args string) error
+}
+
 
 type StockItem struct {
 	Name		string		`json:"name"`
@@ -56,11 +63,12 @@ func main() {
 		log.Print("Cound not open connection to database")
 	}
 	dbQueries := database.New(db)
-	scanner := bufio.NewScanner(os.Stdin)
+	
 
 	apiCfg := apiConfig{
 		db:				dbQueries,
 		User:			"",
+		CurrentStock:	"",
 	}
 	
 
@@ -68,56 +76,5 @@ func main() {
 	apiCfg.LogInMenu()
 
 
-	commands = map[string]cliCommand{
-		"1": {
-			name:        "Create Stock",
-			description: "Add new stock item",
-			callback:    apiCfg.commandCreateNewStockItem,
-		},
-		"2": {
-			name:        "Check Stock Levels",
-			description: "Shows all stock in database",
-			callback:    apiCfg.CommandShowAllStock,
-		},
-	}
-
-	for ;; {
-		fmt.Println(" ")
-		fmt.Printf("Current User: %v ", apiCfg.User)
-		fmt.Println(" ")
-		fmt.Println("1. Create New Stock")
-		fmt.Println("2. Show All Stock Levels")
-		fmt.Print("\ncommand > ")
-		scanner.Scan()
-		cleanedInput := CleanInput(scanner.Text())
-
-		if len(cleanedInput) == 0 {
-			continue
-		}
-
-		commandName := cleanedInput[0]
-
-
-		command, exists := commands[commandName]
-		if exists {
-			
-			if len(cleanedInput) == 1 {
-
-				args := ""
-				err := command.callback(args)
-				if err != nil {
-					fmt.Println(err)
-			}
-			} else {
-			args := cleanedInput[1]
-			err := command.callback(args)
-			if err != nil {
-				fmt.Println(err)
-			}
-			}
-		} else {
-			fmt.Println("Unknown command")
-		}
-
-	}
+	
 }
