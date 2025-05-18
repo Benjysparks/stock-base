@@ -18,7 +18,7 @@ type ShowAllStockRow struct {
 	Stockname string
 	Amount    int32
 	QtyType   string
-	PricePer  int32
+	PricePer  float64
 }
 
 func (q *Queries) ShowAllStock(ctx context.Context) ([]ShowAllStockRow, error) {

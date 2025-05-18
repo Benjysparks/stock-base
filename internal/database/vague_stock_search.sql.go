@@ -12,11 +12,11 @@ import (
 const vagueStockSearch = `-- name: VagueStockSearch :many
 
 SELECT id, stockname, amount, qty_type, price_per FROM stock 
-WHERE stockname LIKE $1
+WHERE LOWER(stockname) LIKE LOWER($1)
 `
 
-func (q *Queries) VagueStockSearch(ctx context.Context, stockname string) ([]Stock, error) {
-	rows, err := q.db.QueryContext(ctx, vagueStockSearch, stockname)
+func (q *Queries) VagueStockSearch(ctx context.Context, lower string) ([]Stock, error) {
+	rows, err := q.db.QueryContext(ctx, vagueStockSearch, lower)
 	if err != nil {
 		return nil, err
 	}

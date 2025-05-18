@@ -25,7 +25,7 @@ type CreateStockItemParams struct {
 	Stockname string
 	Amount    int32
 	QtyType   string
-	PricePer  int32
+	PricePer  float64
 }
 
 func (q *Queries) CreateStockItem(ctx context.Context, arg CreateStockItemParams) (Stock, error) {

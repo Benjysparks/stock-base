@@ -1,4 +1,4 @@
 -- name: VagueStockSearch :many
 
 SELECT * FROM stock 
-WHERE stockname LIKE $1;
+WHERE LOWER(stockname) LIKE LOWER($1);

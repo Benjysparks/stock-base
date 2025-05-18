@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 	"database/sql"
 	"strings"
+	"io/ioutil"
 	"workspace/github.com/Benjysparks/stock-base/internal/database"
 )
 
@@ -18,6 +19,7 @@ type apiConfig struct {
 	db			   *database.Queries
 	User			string
 	CurrentStock	string
+	CurrentInvoice	int
 }
 
 
@@ -63,13 +65,16 @@ func main() {
 		log.Print("Cound not open connection to database")
 	}
 	dbQueries := database.New(db)
-	
 
 	apiCfg := apiConfig{
 		db:				dbQueries,
 		User:			"",
 		CurrentStock:	"",
+		CurrentInvoice:	0001,
 	}
+
+	files, _ := ioutil.ReadDir("./Invoices")
+    apiCfg.CurrentInvoice = (len(files)) + 1
 	
 
 

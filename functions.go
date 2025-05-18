@@ -6,6 +6,15 @@ import (
 	"os"
 )
 
+var Reset = "\033[0m" 
+var Red = "\033[31m" 
+var Green = "\033[32m" 
+var Yellow = "\033[33m" 
+var Blue = "\033[34m" 
+var Magenta = "\033[35m" 
+var Cyan = "\033[36m" 
+var Gray = "\033[37m" 
+var White = "\033[97m"
 
 func (cfg *apiConfig) MainMenu() {
 
@@ -27,6 +36,11 @@ func (cfg *apiConfig) MainMenu() {
 			description: "Searchs for a specific stock item",
 			callback:    cfg.CommandSearchForStock,
 		},
+		"4": {
+			name:        "Create invoice",
+			description: "creates a new invoice",
+			callback:    cfg.commandCreateInvoice,
+		},
 		"0": {
 			name:        "Search For Stock Item",
 			description: "Searchs for a specific stock item",
@@ -38,11 +52,12 @@ func (cfg *apiConfig) MainMenu() {
 
 	for ;; {
 		fmt.Println(" ")
-		fmt.Printf("Current User: %v ", cfg.User)
+		fmt.Printf(Yellow + "Current User: %v ", cfg.User + Reset)
 		fmt.Println(" ")
 		fmt.Println("1. Create New Stock")
 		fmt.Println("2. Show All Stock Levels")
 		fmt.Println("3. Search For Stock")
+		fmt.Println("4. Create Invoice")
 		fmt.Print("\ncommand > ")
 		scanner.Scan()
 		cleanedInput := CleanInput(scanner.Text())

@@ -18,12 +18,23 @@ type History struct {
 	Adjustment string
 }
 
+type Invoice struct {
+	ID         uuid.UUID
+	UserName   string
+	Stockname  string
+	Amount     int32
+	QtyType    string
+	PricePer   float64
+	TotalPrice float64
+	CreatedAt  time.Time
+}
+
 type Stock struct {
 	ID        uuid.UUID
 	Stockname string
 	Amount    int32
 	QtyType   string
-	PricePer  int32
+	PricePer  float64
 }
 
 type User struct {

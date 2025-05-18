@@ -8,4 +8,4 @@ CREATE TABLE history (
 );
 
 -- +goose Down
-DROP TABLE users;
+DROP TABLE history;

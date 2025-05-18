@@ -1,0 +1,10 @@
+Invoice: 11
+
+Stock name                   Quantity                     Quantity unit                Price per unit               Total price                  
+
+Cooper                       3                            each                         500                          1500                         
+
+
+
+
+Total: 1500
